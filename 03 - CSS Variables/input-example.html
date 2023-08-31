@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Input Types Example</title>
+</head>
+<body>
+  <form>
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" placeholder="Enter your username"><br><br>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" placeholder="Enter your password"><br><br>
+
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="quantity" name="quantity" min="1" max="10" step="1"><br><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" placeholder="Enter your email"><br><br>
+
+    <label for="website">Website:</label>
+    <input type="url" id="website" name="website" placeholder="Enter website URL"><br><br>
+
+    <label>Subscribe:</label>
+    <input type="checkbox" name="subscribe" value="yes"> Subscribe to newsletter<br><br>
+
+    <label>Gender:</label>
+    <input type="radio" name="gender" value="male"> Male
+    <input type="radio" name="gender" value="female"> Female<br><br>
+
+    <label for="fileUpload">Upload File:</label>
+    <input type="file" id="fileUpload" name="fileUpload"><br><br>
+
+    <label for="eventDate">Event Date:</label>
+    <input type="date" id="eventDate" name="eventDate"><br><br>
+
+    <label for="eventTime">Event Time:</label>
+    <input type="time" id="eventTime" name="eventTime"><br><br>
+
+    <label for="eventDateTime">Event Date and Time:</label>
+    <input type="datetime-local" id="eventDateTime" name="eventDateTime"><br><br>
+
+    <input type="hidden" name="user_id" value="123">
+    
+    <input type="submit" value="Submit">
+  </form>
+</body>
+</html>

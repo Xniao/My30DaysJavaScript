@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Type Ahead 👀</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="https://fav.farm/🔥" />
 </head>
+
 <body>
 
   <form class="search-form">
@@ -13,11 +15,98 @@
     <ul class="suggestions">
       <li>Filter for a city</li>
       <li>or a state</li>
+      <!-- Test list item -->
+      <!-- <li>
+        <span style="float: left;">
+          <span>Ca</span><span class="hl">li</span><span>fornia</span>
+        </span>
+        <span style="float: right;">111</span>
+      </li> -->
     </ul>
   </form>
-<script>
-const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+  <script>
+    // This code can't match ignore case
+    const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+    const inputBox = document.querySelector('input');
+    const uList = document.querySelector('ul');
+    const cities = [];
+    fetch(endpoint)
+      .then(response => response.json())
+      .then(data => cities.push(...data))
+      .catch(error => console.error('Error:', error));
 
-</script>
+    function addListItem(city, pattern, keyword) {
+      const sp1 = document.createElement('span');
+      const sp2 = document.createElement('span');
+      const listItem = document.createElement('li');
+      
+      sp1.style.float = 'left';
+      sp2.style.float = 'right';
+      sp2.classList.add('population');
+      
+      // Highlight the keyword
+      /* if(city.city.includes(pattern) || city.state.includes(pattern)) {
+        const cityString = city.city.split(pattern);
+        const stateString = city.state.split(pattern);
+        for (var i = 0; i < cityString.length; i++) {
+          const tempSp = document.createElement('span');
+          tempSp.textContent = cityString[i];
+          sp1.appendChild(tempSp);
+          if(i !== cityString.length - 1) {
+            const hlSp = document.createElement('span');
+            hlSp.textContent = pattern;
+            hlSp.classList.add('hl');
+            sp1.appendChild(hlSp);
+          }
+        }
+        const delimSp = document.createElement('span');
+        delimSp.textContent = ', ';
+        sp1.append(delimSp);
+        for (var i = 0; i < stateString.length; i++) {
+          const tempSp = document.createElement('span');
+          tempSp.textContent = stateString[i];
+          sp1.appendChild(tempSp);
+          if(i !== stateString.length - 1) {
+            const hlSp = document.createElement('span');
+            hlSp.textContent = pattern;
+            hlSp.classList.add('hl');
+            sp1.appendChild(hlSp);
+          }
+        }
+      }
+      */
+      cityName = city.city.replace(pattern, `<span class='hl'>${keyword}</span>`);
+      stateName = city.state.replace(pattern, `<span class='hl'>${keyword}</span>`);
+      sp1.innerHTML = `${cityName}, ${stateName}`;
+      sp2.textContent = `${new Intl.NumberFormat().format(city.population)}`;
+
+      listItem.appendChild(sp1);
+      listItem.appendChild(sp2);
+      uList.appendChild(listItem);
+    }
+
+    function handleInput(e) {
+      // Remove previous list item
+      const list = document.querySelectorAll('.suggestions li');
+      list.forEach(li => li.parentNode.removeChild(li));
+
+      // Add new list items
+      const keyword = e.target.value;
+      const pattern = new RegExp(keyword, 'ig');
+      if (keyword === '') {
+        console.log('hello');
+      } else {
+        const filteredCities = cities.filter(city => {
+          return (pattern.test(city.city) || pattern.test(city.state));
+        });
+        filteredCities.forEach(city => addListItem(city, pattern, keyword));
+      }
+    }
+
+    inputBox.addEventListener('input', handleInput);
+
+
+  </script>
 </body>
+
 </html>

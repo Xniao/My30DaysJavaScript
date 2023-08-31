@@ -25,11 +25,16 @@
     }
 
     .panels {
+      display: flex;
       min-height: 100vh;
       overflow: hidden;
     }
 
     .panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex: 1;
       background: #6B0F9C;
       box-shadow: inset 0 0 0 5px rgba(255,255,255,0.1);
       color: white;
@@ -57,7 +62,30 @@
       margin: 0;
       width: 100%;
       transition: transform 0.5s;
+      display: flex;
+      flex: 1;
+      justify-content: center;
+      align-items: center;
     }
+
+    .panel > *:first-child {
+      transform: translateY(-100%);
+
+    }
+
+    .panel > *:last-child {
+      transform: translateY(100%);
+    }
+
+    .panel.open-active > *:first-child {
+      transform: translateY(0%);
+
+    }
+
+    .panel.open-active > *:last-child {
+      transform: translateY(0%);
+    }
+
 
     .panel p {
       text-transform: uppercase;
@@ -72,6 +100,7 @@
 
     .panel.open {
       font-size: 40px;
+      flex: 5;
     }
 
   </style>
@@ -106,7 +135,32 @@
   </div>
 
   <script>
+    const panels = document.querySelectorAll('.panel');
 
+    function handleClicked() {
+      console.log("open!");
+      this.classList.toggle('open');
+      // These piece of code can be replace by the one above
+      /*
+      if (this.classList.value.includes('open')) {
+        this.classList.remove('open');
+        
+      }else {
+        this.classList.add('open');
+      } 
+      */
+    }
+
+    function handleActived(e) {
+      console.log('active!');
+      console.log(e.propertyName);
+      if (e.propertyName.includes('flex')) {
+        this.classList.toggle('open-active');
+      }
+    }
+
+    panels.forEach(panel => panel.addEventListener('click', handleClicked));
+    panels.forEach(panel => panel.addEventListener('transitionend', handleActived));
   </script>
 
 

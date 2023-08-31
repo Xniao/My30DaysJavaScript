@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Access Input Values</title>
+</head>
+<body>
+  <form id="myForm">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username">
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email">
+
+    <input type="button" value="Get Values" onclick="getInputValues()">
+  </form>
+
+  <script>
+    function getInputValues() {
+      var usernameInput = document.getElementsByName("username")[0];
+      var emailInput = document.getElementsByName("email")[0];
+      var usernameValue = usernameInput.value;
+      var emailValue = emailInput.value;
+
+      console.log("Username: " + usernameValue);
+      console.log("Email: " + emailValue);
+    }
+  </script>
+</body>
+</html>

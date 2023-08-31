@@ -46,6 +46,41 @@
   </style>
 
   <script>
+    const image = document.getElementsByTagName("img")[0];
+    const spacingInput = document.getElementsByName("spacing")[0];
+    const blurInput = document.getElementsByName("blur")[0];
+    const colorInput = document.getElementsByName("base")[0];
+    const hlJS = document.getElementsByClassName("hl")[0];
+
+    /* Here are 2 solutions:
+      1. Update each element when it's input update
+      2. Update all elements when one input updates
+    */
+    function updateSpacing() {
+      const spacingSize = spacingInput.value;
+      // console.log(spacingSize);
+      image.style.padding =`${spacingSize}px`;
+    }
+
+    function updateBlur() {
+      const blurSize = blurInput.value;
+      // console.log(blurSize);
+      image.style.filter = `blur(${blurSize}px)`;
+    }
+
+    function updateColor() {
+      hlJS.style.color = colorInput.value;
+      // console.log(colorInput.value);
+      image.style.backgroundColor = colorInput.value;
+    }
+
+    updateSpacing();
+    updateBlur();
+    updateColor();
+
+    spacingInput.addEventListener("input", updateSpacing);
+    blurInput.addEventListener("input", updateBlur);
+    colorInput.addEventListener("input", updateColor);
   </script>
 
 </body>
