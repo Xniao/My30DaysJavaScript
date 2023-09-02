@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Hold Shift to Check Multiple Checkboxes</title>
   <link rel="icon" href="https://fav.farm/🔥" />
 </head>
+
 <body>
   <style>
-
     html {
       font-family: sans-serif;
       background: #ffc600;
@@ -18,7 +19,7 @@
       margin: 50px auto;
       background: white;
       border-radius: 5px;
-      box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
+      box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.1);
     }
 
     .item {
@@ -31,7 +32,7 @@
       border-bottom: 0;
     }
 
-    input:checked + p {
+    input:checked+p {
       background: #F9F9F9;
       text-decoration: line-through;
     }
@@ -45,13 +46,13 @@
       padding: 20px;
       transition: background 0.2s;
       flex: 1;
-      font-family:'helvetica neue';
+      font-family: 'helvetica neue';
       font-size: 20px;
       font-weight: 200;
       border-left: 1px solid #D1E2FF;
     }
   </style>
-   <!--
+  <!--
    The following is a common layout you would see in an email client.
 
    When a user clicks a checkbox, holds Shift, and then clicks another checkbox a few rows down, all the checkboxes inbetween those two checkboxes should be checked.
@@ -96,7 +97,67 @@
     </div>
   </div>
 
-<script>
-</script>
+  <script>
+    // Using compare
+    /* 
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    let lastChecked;
+    console.log(lastChecked);
+    function handleCheck(event) {
+      let inBetween = false;
+
+      if(this.checked && event.shiftKey && lastChecked !== undefined) {
+        checkboxes.forEach(checkbox => {
+          // All the checkbox between then will have a inBetween flag
+          if (checkbox === this || checkbox === lastChecked) {
+            inBetween = !inBetween;
+            console.log('Find between checkbox!');
+          }
+
+          if(inBetween) {
+            checkbox.checked = true;
+          }
+        });
+      }
+      
+      lastChecked = this;
+    }
+
+    checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck));
+    */
+    // Using for loop
+    const inputs = Array.from(document.querySelectorAll('input'));
+    let lastChecked = undefined;
+    let lastUnchecked = undefined;
+    console.dir(inputs);
+
+    function handleChecked(e) {
+      const currentIdx = inputs.indexOf(this);
+      if (this.checked) {
+        console.log('%ith CheckBox is checked', currentIdx);
+        // console.log(e.shiftKey);
+        if (e.shiftKey && lastChecked !== undefined) {
+          console.log('Last checkbox is %i', lastChecked);
+          for (var i = Math.min(currentIdx, lastChecked); i < Math.max(currentIdx, lastChecked); i++) {
+            inputs[i].checked = true;
+          }
+        }
+        lastChecked = currentIdx;
+      } else {
+        console.log('%ith CheckBox is unchecked', currentIdx);
+        if (e.shiftKey && lastUnchecked !== undefined) {
+          console.log('Last uncheckbox is %i', lastUnchecked);
+          for (var i = Math.min(currentIdx, lastUnchecked); i < Math.max(currentIdx, lastUnchecked); i++) {
+            inputs[i].checked = false;
+          }
+        }
+        lastUnchecked = currentIdx;
+      }
+    }
+
+    inputs.forEach(input => input.addEventListener('click', handleChecked));
+    
+  </script>
 </body>
+
 </html>

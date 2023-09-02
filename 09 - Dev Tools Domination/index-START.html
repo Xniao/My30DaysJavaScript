@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Console Tricks!</title>
   <link rel="icon" href="https://fav.farm/🔥" />
 </head>
+
 <body>
 
   <p onClick="makeGreen()">×BREAK×DOWN×</p>
@@ -19,29 +21,52 @@
     }
 
     // Regular
-
+    console.log('This is a simple log.');
     // Interpolated
-
+    console.log("I'm %s, I'm %i years old", 'Jireh', 21);
     // Styled
-
+    // %c means for css style
+    console.log("%cThis is a colorful msg!", "font-size: 30px;color: #f8730a;");
     // warning!
-
+    console.warn('Warning! You addict too much!');
     // Error :|
-
+    console.error('ERROR! You need to change yourself!');
     // Info
-
+    console.info('This is a simple information');
     // Testing
-
+    const p = document.querySelector('p');
+    console.assert(p.classList.contains('11'), 'The p tag don\'t have a class of hello');
     // clearing
-
+    // console.clear();
     // Viewing DOM Elements
-
+    console.log(p);
+    console.dir(document.location);
+    console.dir(document);
     // Grouping together
+    dogs.forEach(dog => {
+      console.groupCollapsed(`DOG: #${dogs.indexOf(dog) + 1}`);
+      console.log(`My name is ${dog.name}.`);
+      console.log(`I am ${dog.age} years old now!`);
+      console.groupEnd();
+    });
 
     // counting
-
+    var name = 'jireh';
+    for (i = 0; i < 10; i++) console.count(name);
     // timing
+    var tag = 'fetch data';
+    console.time(tag);
+    // alert('Click me to continue');
+    fetch('https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json')
+      .then(blob => blob.json())
+      .then(data => {
+        console.timeEnd(tag);
+        console.log(data);
+        // print();
+      });
+    console.table(dogs);
 
   </script>
 </body>
+
 </html>

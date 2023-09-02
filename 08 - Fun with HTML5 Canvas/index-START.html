@@ -1,20 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>HTML5 Canvas</title>
   <link rel="icon" href="https://fav.farm/🔥" />
 </head>
-<body>
-<canvas id="draw" width="800" height="800"></canvas>
-<script>
-</script>
 
-<style>
-  html, body {
-    margin: 0;
-  }
-</style>
+<body>
+  <canvas id="draw" width="800" height="800"></canvas>
+  <script>
+    const canvas = document.getElementById('draw');
+    if (!canvas.getContext) {
+      console.error('Do not support canvas!');
+    }
+    const context = canvas.getContext('2d');
+    const lineCap = 'round';
+    var isDrawing = false;
+    var lastX = 0;
+    var lastY = 0;
+    const brush = {
+      color: 0,
+      size: 20,
+      maxSize: 70,
+      minSize: 5,
+      sizeStep: 1,
+      colorStep: 1.5
+    };
+
+
+    function initCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      context.strokeStyle = `hsl(${brush.color},100%,50%)`;
+      context.lineWidth = brush.size;
+      context.lineCap = lineCap;
+    }
+
+    // Update the brush using step
+    function updateBrush() {
+      // console.log(brush.size);
+      brush.size += brush.sizeStep;
+      context.lineWidth = brush.size;
+      if (brush.size > brush.maxSize) {
+        brush.sizeStep = -Math.abs(brush.sizeStep);
+      }else if(brush.size < brush.minSize) {
+        brush.sizeStep = Math.abs(brush.sizeStep);
+      }
+      brush.color += brush.colorStep;
+      context.strokeStyle = `hsl(${brush.color},100%,50%)`;
+      if(brush.color === 360) {
+        brush.color = 0;
+      }
+      /*
+      if(brush.color === 0) {
+        brush.colorStep = Math.abs(brush.colorStep);
+      }else if(brush.color === 360) {
+        // brush.color = 0;
+        brush.colorStep = -Math.abs(brush.colorStep);
+      } */
+    }
+
+    function startDraw(e) {
+      isDrawing = true;
+      [lastX, lastY] = [e.clientX, e.clientY];
+    }
+
+    function drawing(e) {
+      if (!isDrawing) return;
+      context.beginPath();
+      context.moveTo(lastX, lastY);
+      context.lineTo(e.clientX, e.clientY);
+      context.stroke();
+      [lastX, lastY] = [e.clientX, e.clientY];
+      updateBrush();
+    }
+
+    function previousDrawing(e) {
+      if (!isDrawing) return;
+      context.beginPath();
+      context.arc(e.offsetX, e.offsetY, brush.size, 0, 2 * Math.PI);
+      context.fill();
+      updateBrush();
+    }
+
+    initCanvas();
+
+    canvas.addEventListener('mousedown', startDraw);
+    canvas.addEventListener('mousemove', drawing);
+    canvas.addEventListener('mouseup', () => isDrawing = false);
+    canvas.addEventListener('mouseout', () => isDrawing = false);
+    
+  </script>
+
+  <style>
+    html,
+    body {
+      margin: 0;
+    }
+  </style>
 
 </body>
+
 </html>
