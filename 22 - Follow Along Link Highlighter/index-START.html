@@ -28,6 +28,23 @@
 
   <script>
     // 👀👀👀👀👀👀👀👀👀👀👀👀👀👀👀
+    // Create a highlight span, when move to a link, highlight span will go there. 
+    const links = document.querySelectorAll("a");
+    const highlight = document.createElement("span");
+    highlight.classList.add("highlight");
+    document.body.appendChild(highlight);
+
+    function highlightLink() {
+      const rect = this.getBoundingClientRect();
+      const left = window.scrollX + rect.left,
+            top = window.scrollY + rect.top;
+
+      highlight.style.width = `${rect.width}px`;
+      highlight.style.height = `${rect.height}px`;
+      highlight.style.transform = `translate(${left}px,${top}px)`;
+    }
+
+    links.forEach(e => e.addEventListener("mouseenter", highlightLink));
   </script>
 </body>
 </html>
