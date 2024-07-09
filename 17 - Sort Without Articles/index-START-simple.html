@@ -48,25 +48,14 @@
   <ul id="bands"></ul>
   <!-- English Grammar Knowledge: Article: a, an, the -->
   <script>
-    const list = document.querySelector('#bands');
     const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
-    // Regular exp for any articles
-    const articles = /\b(a|an|the)\s/gi
-    // The map contains the band without article and its original index
-    const bandsMap = bands.map((value, index) => {
-      return {
-        band: value.replace(articles, '').trim(),
-        index: index
-      }
-    });
     
-    const sortedBandsIndex = ([...bandsMap].sort((a,b) => {
-      return a.band.localeCompare(b.band);
-    })).map(v => v.index);
+    function strip(bandName) {
+      return bandName.replace('/\b(a |an |the )/gi').trim();
+    }
 
-    const sortedBands = sortedBandsIndex.map(v => bands[v]);
-    list.innerHTML = sortedBands.map(v => `<li>${v}</li>`).join('');
-    
+    const sortedBands = bands.sort((a,b) => strip(a).localeCompare(strip(b)));
+    document.querySelector('#bands').innerHTML = sortedBands.map(v => `<li>${v}</li>`).join('');
 
   </script>
 

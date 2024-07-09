@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Videos</title>
   <link rel="icon" href="https://fav.farm/🔥" />
 </head>
+
 <body>
   <ul class="videos">
     <li data-time="5:43">
@@ -182,7 +184,51 @@
       Video 58
     </li>
   </ul>
-<script>
-</script>
+  <script>
+    const videos = Array.from(document.querySelectorAll('[data-time]'));
+    const totalSecond = videos.map(video => video.dataset.time)
+      .map(time => {
+        const [minutes, seconds] = time.split(":").map(parseFloat);
+        return (minutes * 60) + seconds;
+      })
+      .reduce((total, curr) => total + curr);
+
+    // const time = "5:32";
+    // pareseInt can take 2 arguments, (string, radix)
+    // const test = time.split(":").map(parseInt);
+    const sec = totalSecond % 60;
+    const min = Math.trunc(totalSecond / 60 % 60);
+    const hrs = Math.trunc(totalSecond / 60 / 60 % 60);
+    console.log(`Total Time: ${hrs} hours ${min} minutes ${sec} seconds`);
+    console.log("Break");
+    function oldSolution() {
+      // 4:30 -> 4 * 60 + 30
+      function toSecond(timeStr) {
+        var result = 0;
+        const arr = timeStr.split(":");
+        for (var i = arr.length - 1; i >= 0; i--) {
+          result += parseInt(arr[i]) * (60 ** ((arr.length - 1) - i));
+        }
+        return result;
+      }
+
+      function toTimeStr(totalSecond) {
+        var second = parseInt(totalSecond % 60);
+        var minute = parseInt(totalSecond / 60 % 60);
+        var hours = parseInt(totalSecond / 60 / 60 % 60);
+        return hours != 0 ? (`${hours}:${minute}:${second}`) : (`${minute}:${second}`);
+      }
+
+      const videos = Array.from(document.querySelectorAll('.videos li'));
+      const totalTime = videos.map(video => video.dataset.time)
+        .reduce((total, curr) => {
+          total += toSecond(curr);
+          return total;
+        }, 0);
+      console.log(totalTime);
+      console.log(toTimeStr(totalTime));
+    }
+  </script>
 </body>
+
 </html>

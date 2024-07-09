@@ -57,6 +57,17 @@ h2 {
   cursor: pointer;
 }
 
+/* Delete button css */
+.plates span {
+  display: inline-block;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.plates span.mouseover {
+  background: rgba(176, 175, 175, 0.7);
+}
+
 .plates input {
   display: none;
 }

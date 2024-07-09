@@ -1,14 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>JS Reference VS Copy</title>
   <link rel="icon" href="https://fav.farm/🔥" />
 </head>
+
 <body>
 
   <script>
+    function myLog(original, current) {
+      console.log('Original: ', original);
+      console.log('Current: ', current);
+    }
+    // QUESTION: JS中函数返回的变量会不会被清除呢？
+    // ANSWER: javascript has a garbage collector, 
+    // it only collect those variable whose have no reference any more.
+    function cloneDeep(obj) {
+      var type = typeof obj;
+      // Primitive Type, return the value is just fine.
+      if (type === 'number' || type === 'boolean' || type === undefined || type === null) {
+        return obj;
+      }
+      // string, need return a new string
+      if (type === 'string') {
+        return (' ' + obj).slice(1);
+      }
+      // Object, need to traverse all elements in it and clone each element.
+      var result = {};
+      if (type === 'object') {
+        for (var attr in obj) {
+          result[attr] = cloneDeep(obj[attr]);
+        }
+      }
+      return result;
+    }
     // start with strings, numbers and booleans
+    /* let name1 = 'jireh';
+    let name2 = name1;
+    name2 += ' Guo';
+    myLog(name1, name2);
+
+    let age1 = 21;
+    let age2 = age1;
+    age2 -= 1;
+    myLog(age1, age2);
+
+    let male1 = true;
+    let male2 = male1;
+    male2 = !male2;
+    myLog(male1, male2); */
 
     // Let's say we have an array
     const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
@@ -16,23 +58,31 @@
     // and we want to make a copy of it.
 
     // You might think we can just do something like this:
-
+    const myPlayers = players;
     // however what happens when we update that array?
-
+    myPlayers.push('Jireh');
     // now here is the problem!
-
+    myLog(players, myPlayers);
     // oh no - we have edited the original array too!
 
     // Why? It's because that is an array reference, not an array copy. They both point to the same array!
 
     // So, how do we fix this? We take a copy instead!
-
+    const copyPlayer1 = [];
     // one way
-
+    players.forEach(player => copyPlayer1.push(player));
+    copyPlayer1.pop();
+    myLog(players, copyPlayer1);
     // or create a new array and concat the old one in
-
+    let copyPlayer2 = [];
+    copyPlayer2 = copyPlayer2.concat(players);
+    copyPlayer2.pop();
+    myLog(players, copyPlayer2);
     // or use the new ES6 Spread
-
+    let copyPlayer3 = [];
+    copyPlayer3.push(...myPlayers);
+    copyPlayer3.pop();
+    myLog(players, copyPlayer3);
     // now when we update it, the original one isn't changed
 
     // The same thing goes for objects, let's say we have a person object
@@ -44,14 +94,39 @@
     };
 
     // and think we make a copy:
-
+    const person1 = person;
+    person1.age = 20;
+    myLog(person, person1);
     // how do we take a copy instead?
-
+    const person2 = { ...person };
+    person2.age = 22;
+    myLog(person, person2);
     // We will hopefully soon see the object ...spread
-
+    console.clear();
     // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
-
+    const dog = {
+      name: 'Small White',
+      male: true
+    }
+    const owner = {
+      name: 'Jireh Guo',
+      age: 21,
+      pet: dog
+    }
+    const owner1 = { ...owner };
+    owner.pet.male = false;
+    myLog(owner, owner1);
+    const owner2 = cloneDeep(owner);
+    owner2.pet.male = true;
+    myLog(owner, owner2);
+    console.log(owner2.pet.name);
+    console.clear();
+    const owner3 = Object.assign({}, owner, { pet: Object.assign({}, dog, { name: 'Small White', male: false }) });
+    owner3.pet.male = true;
+    myLog(owner, owner3);
+    console.log(JSON.parse(JSON.stringify(owner3)));
   </script>
 
 </body>
+
 </html>
